@@ -1,31 +1,17 @@
 import { useState } from "react";
 import Mensaje from "./Mensaje";
-import cerrarModal from "../img/cerrar.svg";
+import cerrarModalImg from "../img/cerrar.svg";
 
 function Modal({
-    setModal,
     animarModal,
-    setAnimarModal,
-    mostrarModal,
-    toggleModal,
     guardarGasto,
+    mostrarModal,
+    cerrarModal
 }) {
     const [nombre, setNombre] = useState("");
     const [cantidad, setCantidad] = useState("");
     const [categoria, setCategoria] = useState("");
     const [mensaje, setMensaje] = useState("");
-
-    function ocultarModal() {
-        setAnimarModal(false);
-
-        setTimeout(() => {
-            toggleModal();
-        }, 300);
-
-        setTimeout(() => {
-            setModal(false);
-        }, 400);
-    }
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -37,6 +23,9 @@ function Modal({
             return;
         }
         setMensaje("");
+        setNombre("");
+        setCantidad("");
+        setCategoria("");
         guardarGasto({ nombre, cantidad, categoria });
     }
 
@@ -44,9 +33,9 @@ function Modal({
         <div className={`modal ${mostrarModal ? "abrir" : "cerrar"}`}>
             <div className="cerrar-modal">
                 <img
-                    src={cerrarModal}
+                    src={cerrarModalImg}
                     alt="imagen cerrar"
-                    onClick={ocultarModal}
+                    onClick={cerrarModal}
                 />
             </div>
 

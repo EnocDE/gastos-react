@@ -1,64 +1,94 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Header from "./components/Header";
-import IconoNuevoGasto from "./img/nuevo-gasto.svg";
+import ListadoGastos from "./components/ListadoGastos";
 import Modal from "./components/Modal";
+import { generarId } from "./helpers/index";
+import IconoNuevoGasto from "./img/nuevo-gasto.svg";
 
 function App() {
-    const [presupuesto, setPresupuesto] = useState('');
+    const [presupuesto, setPresupuesto] = useState("");
     const [isValidPresupuesto, setIsValidPresupuesto] = useState(false);
     const [modal, setModal] = useState(false);
     const [animarModal, setAnimarModal] = useState(false);
     const [mostrarModal, setMostrarModal] = useState(false);
-    const [gastos, setGastos] = useState([])
+    const [gastos, setGastos] = useState([]);
+    const [gastoEditar, setGastoEditar] = useState({});
 
-    
     function toggleModal() {
         setMostrarModal(!mostrarModal);
     }
 
-    function guardarGasto(gasto) {
-        setGastos([...gastos, gasto])
+    function cerrarModal() {
         setAnimarModal(false);
-        setTimeout(() => {
-            setMostrarModal(false);
-        }, 300);
-    } 
-
-    function handleNuevoGasto() {
-        setModal(true);
 
         setTimeout(() => {
             toggleModal();
+        }, 300);
+
+        setTimeout(() => {
+            setModal(false);
+        }, 400);
+    }
+
+    function abrirModal() {
+        setModal(true);
+
+        setTimeout(() => {
             setAnimarModal(true);
+            toggleModal();
         }, 100);
     }
 
+    function guardarGasto(gasto) {
+        gasto.id = generarId();
+        gasto.fecha = Date.now();
+
+        setGastos([...gastos, gasto]);
+
+        cerrarModal();
+    }
+
+    function handleNuevoGasto() {
+        abrirModal();
+    }
+
     return (
-        <div>
+        <div className={modal ? "fijar" : ""}>
             <Header
+                gastos={gastos}
                 presupuesto={presupuesto}
                 setPresupuesto={setPresupuesto}
                 isValidPresupuesto={isValidPresupuesto}
                 setIsValidPresupuesto={setIsValidPresupuesto}
             />
             {isValidPresupuesto && (
-                <div className="nuevo-gasto">
-                    <img
-                        src={IconoNuevoGasto}
-                        alt="Imagen nuevo gasto"
-                        onClick={handleNuevoGasto}
-                    />
-                </div>
+                <>
+                    <main>
+                        <ListadoGastos
+                            gastos={gastos}
+                            setGastoEditar={setGastoEditar}
+                            abrirModal={abrirModal}
+                            cerrarModal={cerrarModal}
+                        />
+                    </main>
+                    <div className="nuevo-gasto">
+                        <img
+                            src={IconoNuevoGasto}
+                            alt="Imagen nuevo gasto"
+                            onClick={handleNuevoGasto}
+                        />
+                    </div>
+                </>
             )}
 
             {modal && (
                 <Modal
-                    setModal={setModal}
+                    
                     animarModal={animarModal}
-                    setAnimarModal={setAnimarModal}
                     mostrarModal={mostrarModal}
-                    toggleModal={toggleModal}
                     guardarGasto={guardarGasto}
+                    setGastoEditar={setGastoEditar}
+                    cerrarModal={cerrarModal}
                 />
             )}
         </div>

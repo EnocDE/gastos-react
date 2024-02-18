@@ -347,6 +347,7 @@ main {
 
 .modal.cerrar {
     clip-path: circle(0% at 50% 50%);
+    
 }
 
 .modal.abrir {
@@ -387,6 +388,7 @@ body .modal {
 .modal .formulario.animar {
     position: relative;
     opacity: 1;
+    transition: all .15s 2s cubic-bezier(0.165, 0.84, 0.44, 1) both;
 }
 
 .modal .formulario.cerrar {
