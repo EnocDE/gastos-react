@@ -15,22 +15,19 @@ import IconoOcio from "../img/icono_ocio.svg";
 import IconoSalud from "../img/icono_salud.svg";
 import IconoSuscripciones from "../img/icono_suscripciones.svg";
 
-const diccionarioIconos = {
-    ahorro: IconoAhorro,
-    comida: IconoCasa,
-    casa: IconoComida,
-    gastos: IconoGastos,
-    ocio: IconoOcio,
-    salud: IconoSalud,
-    suscripciones: IconoSuscripciones,
-};
-
-function Gasto({
-    gasto,
-    setGastoEditar,
-    abrirModal
-}) {
+function Gasto({ gasto, abrirModal, eliminarGasto, setGastoEditar }) {
+    
     const { nombre, cantidad, categoria, id, fecha } = gasto;
+
+    const diccionarioIconos = {
+        ahorro: IconoAhorro,
+        comida: IconoCasa,
+        casa: IconoComida,
+        gastos: IconoGastos,
+        ocio: IconoOcio,
+        salud: IconoSalud,
+        suscripciones: IconoSuscripciones,
+    }
 
     function editar() {
         setGastoEditar(gasto);
@@ -40,17 +37,19 @@ function Gasto({
 
     const leadingActions = () => (
         <LeadingActions>
-            <SwipeAction onClick={editar}>Editar</SwipeAction>
+            <SwipeAction onClick={() => editar()}>Editar</SwipeAction>
         </LeadingActions>
     );
 
     const trailingActions = () => (
         <TrailingActions>
-            <SwipeAction onClick={() => console.log("Eliminar")}>
+            <SwipeAction onClick={() => eliminarGasto(id)} destructive={true}>
                 Eliminar
             </SwipeAction>
         </TrailingActions>
     );
+
+    
 
     return (
         <SwipeableList>

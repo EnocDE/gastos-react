@@ -4,7 +4,8 @@ function ListadoGastos({
     gastos,
     setGastoEditar,
     abrirModal,
-    cerrarModal
+    cerrarModal,
+    eliminarGasto
 }) {
     return (
         <div className="listado-gastos contenedor">
@@ -17,6 +18,7 @@ function ListadoGastos({
                     setGastoEditar={setGastoEditar}
                     abrirModal={abrirModal}
                     cerrarModal={cerrarModal}
+                    eliminarGasto={eliminarGasto}
                 />
             ))}
         </div>
