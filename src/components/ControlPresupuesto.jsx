@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import "react-circular-progressbar/dist/styles.css";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
-function ControlPresupuesto({ gastos, presupuesto }) {
+function ControlPresupuesto({
+    setIsValidPresupuesto,
+    gastos,
+    setGastos,
+    presupuesto,
+    setPresupuesto,
+}) {
     const [porcentaje, setPorcentaje] = useState(40);
     const [disponible, setDisponible] = useState(0);
     const [gastado, setGastado] = useState(0);
@@ -22,10 +28,19 @@ function ControlPresupuesto({ gastos, presupuesto }) {
 
         setTimeout(() => {
             setPorcentaje(nuevoPorcentaje);
-        }, 700);
+        }, 300);
 
         setDisponible(totalDisponible);
     }, [gastos]);
+
+    function handleResetApp() {
+        const respuesta = confirm('¿Deseas reiniciar la aplicación?');
+        if (respuesta) {
+            setGastos([]);
+            setPresupuesto(0);
+            setIsValidPresupuesto(false)
+        }
+    }
 
     function formatearCantidad(cantidad) {
         return cantidad.toLocaleString("en-US", {
@@ -40,18 +55,19 @@ function ControlPresupuesto({ gastos, presupuesto }) {
                 <CircularProgressbar
                     value={porcentaje}
                     styles={buildStyles({
-                        pathColor: "#3b82f6",
+                        pathColor: `${disponible > 0 ? "#3b82f6" : "#f03437"}`,
                         trailColor: "#f5f5f5",
-                        textColor: "#3b82f6",
+                        textColor: `${disponible > 0 ? "#3b82f6" : "#f03437"}`,
                     })}
                     text={`${porcentaje}% Gastado`}
                 />
             </div>
             <div className="contenido-presupuesto">
+                <button className="reset-app" type="button" onClick={handleResetApp}>Resetear App</button>
                 <p>
                     <span>Presupuesto: </span> {formatearCantidad(presupuesto)}
                 </p>
-                <p>
+                <p className={`${disponible < 0 ? "negativo" : ""}`}>
                     <span>Disponible: </span> {formatearCantidad(disponible)}
                 </p>
                 <p>
